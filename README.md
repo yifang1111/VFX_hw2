@@ -50,8 +50,8 @@ R10942198 電信丙 林仲偉
 
 ### (2) Feature Detection: 
 使用 Harris Corner Detector 做 Feature detection:
-1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient $$I_{x}$$和$$I_{y}$$
-2. 計算gradient乘積 $$I_{x}^{2}$$, $$I_{y}^{2}$$, $$I_{x}*I_{y}$$
+1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient $$I_{x}$$ 和 $$I_{y}$$
+2. 計算gradient乘積 $$I_{x}^{2}, I_{y}^{2}, I_{x}*I_{y}$$
 3. 用 Gaussian Filter 作為 window function 計算gradient乘積的加總
 4. 得到M矩陣
 5. 計算 corner response R = detM - k$$(traceM)^{2}$$，這裡k值使用0.04
