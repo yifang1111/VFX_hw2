@@ -81,6 +81,7 @@ $$
 8. 剩下的點即為 keypoints.
 
 **＊使用 SIFT descriptor 取得 feature descriptor:**
+
 **orientation assignment**
 1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient.
 2. 使用 x 和 y 的 gradient 計算 keypoint orientation 的角度 $\theta$ 和強度 $m$.
