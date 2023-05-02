@@ -52,13 +52,14 @@ R10942198 電信丙 林仲偉
 ### (2) Feature Detection: 
 
 **Harris Corner Detector:**
-**SIFT**
+
+**SIFT:**
 
 ### (3) Feature Matching
 
 ### (4) Image Matching
 
-**RANSAC Algorithm**
+**RANSAC Algorithm:**
 
 ### (5) Image Stitching
 
