@@ -57,12 +57,10 @@ R10942198 電信丙 林仲偉
 
 $$
 M=
-\left\(
 \begin{matrix}
 S_{x^{2}} & S_{xy} \\\
 S_{xy} & S_{y^{2}} \\\
 \end{matrix}
-\right\)
 $$
 
 5. 計算 corner response $R = detM - k(traceM)^{2}$，這裡 k 值使用 0.04
