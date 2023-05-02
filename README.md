@@ -89,27 +89,53 @@ $$
 2. 使用 euclidean distance 計算 features 的相似度
 3. 差距小於 threshold ，且最相近的 feature < 第二相近的 feature * 0.8，做 matching
 
-### (4) Image Matching and Stitching
-我們使用 RANSAC 演算法決定拼接時兩張照片的平移量。
-**RANSAC Algorithm**
+### (4) Image Matching and Warping
+我們使用 RANSAC 演算法，找出最少 outlier 的平移量 (∆x, ∆y)，以決定如何拼接兩張照片。
 
-**Why not using homography matrix?**
-由於我們發現 Homography matrix 會對照片產生 translation, 而拼接到越後面的照片，累積的 translation 將越嚴重，導致後面的照片嚴重扭曲。故我們選擇計算兩張照片的平移量，來代替 homography matrix.
+**＊RANSAC Algorithm (for shift):**
+```
+1. Run for k=len(match_pairs) times:
+2.     Draw n=1 sample from match_pairs sequentially.
+3.     Fit parameter θ=(x1-x2, y1-y2)=(∆x, ∆y).
+4.     For every other samples from match_pairs:
+5.         Calculate distance to the fitted model by L2-norm.
+6.         Count number of inliers C by a given threshold T.
+7. Output parameter θ=(∆x, ∆y) with the max number of inliers C. 
+```
+
+**＊Why not using homography matrix?**
+
+下列5張圖為使用 homography matrix 對六張圖片做拼接的結果：
+<img src="https://i.imgur.com/qsIxVcZ.jpg" >
+<img src="https://i.imgur.com/Sujbl4s.jpg" >
+<img src="https://i.imgur.com/ynYW46j.jpg" >
+<img src="https://i.imgur.com/e9vLljf.jpg" >
+<img src="https://i.imgur.com/rqzTZ5o.jpg" >
+
+我們發現 Homography matrix 會對照片產生 translation。 而拼接到越後面的照片，累積的 translation 將越明顯，導致後面的照片嚴重扭曲。所以我們選擇藉由兩張照片的平移量來做拼接，來代替 homography matrix.
+
 
 ### (5) Blending
 
+我們使用 linear blending 來消除兩個拼接影像之間的接縫感。
+
+<img src="https://i.imgur.com/WFvUzJ4.jpg" width="400px"> <img src="https://i.imgur.com/PbrGLYS.jpg" width="400px"> 
+
 
 ## 5. Result
-TODO
+
+最後成果圖：拼接20張照片後的全景影像。
+![](https://i.imgur.com/eahGAme.jpg)
+
 
 ## 6. Summary
 
-我們完成了以下work:
-- 實作
-- 實作 
-- 實作
+我們完成了以下 work:
+- 實作 Cylindrical Projection
+- 實作 Harris Corner Detector
+- 實作 RANSAC Algorithm
+- 實作 Linear Blending
 
 ## 7. Reproduce Steps
 TODO
-
 
