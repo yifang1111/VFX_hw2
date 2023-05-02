@@ -37,7 +37,7 @@ R10942198 電信丙 林仲偉
 ## 3. Program Workflow
 1. 使用 autostitch 去得到所有照片的 focal length
 2. 對照片做 cylindrical projection
-3. 使用 Harris Corner Detector 去做 Feature detection
+3. 使用 Harris Corner Detector/SIFT 去做 Feature detection
 4. Feature matching
 5. 用 RANSAC 去找出使得 Image matching 結果最好的 Homography matrix (在此作業中，我們假設只會發生平移)
 6. 根據 Homography matrix 對兩張圖片做 Image Stitching.
@@ -47,15 +47,35 @@ R10942198 電信丙 林仲偉
 
 ## 4. Implementation Detail
 
+### (1) Cylindrical Projection
 
-## 5. Summary
+### (2) Feature Detection: 
+
+**Harris Corner Detector:**
+**SIFT**
+
+### (3) Feature Matching
+
+### (4) Image Matching
+
+**RANSAC Algorithm**
+
+### (5) Image Stitching
+
+### (6) Blending
+
+
+## 5. Result
+TODO
+
+## 6. Summary
 
 我們完成了以下work:
 - 實作
 - 實作 
 - 實作
 
-## 6. Reproduce Steps
+## 7. Reproduce Steps
 TODO
 
 
