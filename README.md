@@ -116,6 +116,7 @@ $$
 **＊Why not using homography matrix?**
 
 下列5張圖為使用 homography matrix 對六張圖片做拼接的結果：
+
 <img src="https://i.imgur.com/qsIxVcZ.jpg" width="200px">
 <img src="https://i.imgur.com/Sujbl4s.jpg" width="250px">
 <img src="https://i.imgur.com/ynYW46j.jpg" width="300px">
