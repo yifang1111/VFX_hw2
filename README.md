@@ -133,10 +133,11 @@ $$
 
 <img src="https://i.imgur.com/WFvUzJ4.jpg" width="400px"> <img src="https://i.imgur.com/PbrGLYS.jpg" width="400px"> 
 
-### (5) End-to-end Alignment
+### (5) End-to-end Alignment (BONUS)
 
 我們使用 End-to-end Alignment 使得最後一張影像能成功拼接上第一張影像。
-
+1. 使用上述Featrue detection, Feature matching, Image matching 的方式取得第一張和最後一張之間y方向的位移
+2. 對整張圖依總y方向的位移量，逐步y的位移
 
 ## 5. Result
 
