@@ -133,6 +133,10 @@ $$
 
 <img src="https://i.imgur.com/WFvUzJ4.jpg" width="400px"> <img src="https://i.imgur.com/PbrGLYS.jpg" width="400px"> 
 
+### (5) End-to-end Alignment
+
+我們使用 End-to-end Alignment 使得最後一張影像能成功拼接上第一張影像。
+
 
 ## 5. Result
 
@@ -147,5 +151,6 @@ $$
 - 實作 Harris Corner Detector
 - 實作 RANSAC Algorithm
 - 實作 Linear Blending
+- 實作 End-to-end Alignment
 
 
