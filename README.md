@@ -62,19 +62,19 @@ R10942198 電信丙 林仲偉
   \right)
 \end{equation}$$
    
-5. 計算 corner response $R = detM - k(traceM)^{2}$，這裡k值使用0.04
+5. 計算 corner response $R = detM - k(traceM)^{2}$，這裡 k 值使用 0.04
 6. 以 0.01*max(response) 作為 threshold，篩選掉小於 threshold 不為 corner 的 keypoint
 7. 使用 maximum_filter 做 nonmax supression，篩選掉太過相近的點
 8. 剩下的點即為 keypoints
 
 使用 SIFT descriptor 取得 feature descriptor:
-**orientation assignment**
+\\**orientation assignment**
 1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient
 2. 使用 x 和 y 的 gradient 計算 keypoint orientation 的角度 $\Theta$ 和強度 $m$
 3. 將 orientation 以每 10 度分成一個 bucket，得到 historgram
 4. 以每個 bucket 中間值作為 keypoint 的 orientation，以 keypoint 為中心旋轉
 5. 實現 keypoint descriptor orientation invariant
-**local image descriptor**
+\\**local image descriptor**
 1. 使用同樣的方式，但將 orientation 以每 45 度分成一個 bucket，得到 8 個 orientations 的 historgram
 2. 以 keypoint 為中心，取得 16x16 array，並將其分成 4x4 sub-array，每個 sub-array 統計 8 個 orientations 各自次數
 3. 以 8 x 4x4 = 128 dimensions 表示為一個 keypoint descriptor
