@@ -152,6 +152,6 @@ $$
 - 實作 Harris Corner Detector
 - 實作 RANSAC Algorithm
 - 實作 Linear Blending
-- 實作 End-to-end Alignment
+- 實作 End-to-end Alignment (BONUS)
 
 
