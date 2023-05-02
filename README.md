@@ -35,8 +35,8 @@ R10942198 電信丙 林仲偉
 
 
 ## 3. Program Workflow
-1. 使用 autostitch 去得到所有照片的 focal length
-2. 對照片做 cylindrical projection
+1. 使用 Autostitch 去得到所有照片的 Focal length
+2. 對照片做 Cylindrical Projection
 3. 使用 Harris Corner Detector 取得 keypoint
 4. 使用 SIFT 的方式取得 feature descriptor
 5. 使用 brute force 的方式比較 euclidean distance 做 Feature matching
