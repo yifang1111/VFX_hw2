@@ -2,9 +2,11 @@
 R11946012 資科所 王奕方 
 R10942198 電信丙 林仲偉
 
+____
 ## 1. Description
 在定點拍攝全景場景不同方向的照片，先使用 feature detection 找出兩兩照片之間的特徵點，然後使用 feature matching 找出 match point pairs，最後根據 match point pairs 做 image stitching，並使用 blendering 使得拼接後影像邊界視覺上看起來沒有接縫，以得到一張全景圖。
 
+____
 ## 2. Experiment Setup
 
 | 項目 | 描述                  |
@@ -31,9 +33,9 @@ R10942198 電信丙 林仲偉
 
 * 場景二：水源會館草皮
 
-<img src="https://i.imgur.com/YK1o1TQ.jpg" width="200px"><img src="https://i.imgur.com/K9GCiaA.jpg" width="200px"><img src="https://i.imgur.com/skdS66n.jpg" width="200px"><img src="https://i.imgur.com/T6AY1w6.jpg" width="200px"><img src="https://i.imgur.com/Rnbpj6Z.jpg" width="200px"><img src="https://i.imgur.com/L2oDk5N.jpg" width="200px"><img src="https://i.imgur.com/WpaD11s.jpg" width="200px"><img src="https://i.imgur.com/1JVlEP7.jpg" width="200px"><img src="https://i.imgur.com/kt6c68g.jpg" width="200px"><img src="https://i.imgur.com/WvIXFFd.jpg" width="200px"><img src="https://i.imgur.com/FKl4cB4.jpg" width="200px"><img src="https://i.imgur.com/B5jDUQU.jpg" width="200px"><img src="https://i.imgur.com/nnYkWP7.jpg" width="200px"><img src="https://i.imgur.com/QymFXLs.jpg" width="200px"><img src="https://i.imgur.com/1FK3vjl.jpg" width="200px"><img src="https://i.imgur.com/mzczKYr.jpg" width="200px"><img src="https://i.imgur.com/TYSzyMv.jpg" width="200px"><img src="https://i.imgur.com/NrgTIZR.jpg" width="200px"><img src="https://i.imgur.com/yDWNKhO.jpg" width="200px"><img src="https://i.imgur.com/GkWtlST.jpg" width="200px">
+<!-- <img src="https://i.imgur.com/YK1o1TQ.jpg" width="200px"><img src="https://i.imgur.com/K9GCiaA.jpg" width="200px"><img src="https://i.imgur.com/skdS66n.jpg" width="200px"><img src="https://i.imgur.com/T6AY1w6.jpg" width="200px"><img src="https://i.imgur.com/Rnbpj6Z.jpg" width="200px"><img src="https://i.imgur.com/L2oDk5N.jpg" width="200px"><img src="https://i.imgur.com/WpaD11s.jpg" width="200px"><img src="https://i.imgur.com/1JVlEP7.jpg" width="200px"><img src="https://i.imgur.com/kt6c68g.jpg" width="200px"><img src="https://i.imgur.com/WvIXFFd.jpg" width="200px"><img src="https://i.imgur.com/FKl4cB4.jpg" width="200px"><img src="https://i.imgur.com/B5jDUQU.jpg" width="200px"><img src="https://i.imgur.com/nnYkWP7.jpg" width="200px"><img src="https://i.imgur.com/QymFXLs.jpg" width="200px"><img src="https://i.imgur.com/1FK3vjl.jpg" width="200px"><img src="https://i.imgur.com/mzczKYr.jpg" width="200px"><img src="https://i.imgur.com/TYSzyMv.jpg" width="200px"><img src="https://i.imgur.com/NrgTIZR.jpg" width="200px"><img src="https://i.imgur.com/yDWNKhO.jpg" width="200px"><img src="https://i.imgur.com/GkWtlST.jpg" width="200px"> -->
 
-
+____
 ## 3. Program Workflow
 1. 使用 Autostitch 去得到所有照片的 Focal length
 2. 對照片做 Cylindrical Projection
@@ -43,7 +45,7 @@ R10942198 電信丙 林仲偉
 6. 用 RANSAC 去找出使得 Image matching 結果最好的 shift amount, 並依此對兩張圖片做 Image Stitching. (在此作業中，我們假設只會發生平移)
 7. 做 Linear Blending
 8. 重複 2~7, 直到所有照片都被拼接完成。 
-
+____
 ## 4. Implementation Detail
 
 ### (1) Cylindrical Projection
@@ -122,20 +124,20 @@ $$
 
 我們發現 Homography matrix 會對照片產生 translation。 而拼接到越後面的照片，累積的 translation 將越明顯，導致後面的照片嚴重扭曲。所以我們選擇藉由兩張照片的平移量來做拼接，來代替 homography matrix.
 
-
+____
 ### (5) Blending
 
 我們使用 linear blending 來消除兩個拼接影像之間的接縫感。
 
 <img src="https://i.imgur.com/WFvUzJ4.jpg" width="400px"> <img src="https://i.imgur.com/PbrGLYS.jpg" width="400px"> 
 
-
+____
 ## 5. Result
 
 最後成果圖：拼接20張照片後的全景影像。
 ![](https://i.imgur.com/eahGAme.jpg)
 
-
+____
 ## 6. Summary
 
 我們完成了以下 work:
@@ -144,6 +146,7 @@ $$
 - 實作 RANSAC Algorithm
 - 實作 Linear Blending
 
+____
 ## 7. Reproduce Steps
 TODO
 
