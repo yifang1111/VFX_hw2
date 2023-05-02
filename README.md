@@ -13,7 +13,7 @@ R10942198 電信丙 林仲偉
 | 焦距 |        43mm          |
 | ISO  |       1000             |
 | F    |          4.5          |
-| 快門時間   |          4.5          |
+| 快門時間   |          1/15s          |
 
 
 ### 場景圖片
@@ -37,8 +37,8 @@ R10942198 電信丙 林仲偉
 ## 3. Program Workflow
 1. 使用 autostitch 去得到所有照片的 focal length
 2. 對照片做 cylindrical projection
-3. 使用 Harris Corner Detector 去做 Feature detection
-4. 使用 SIFT 的方式去做 Feature descriptor
+3. 使用 Harris Corner Detector 取得 keypoint
+4. 使用 SIFT 的方式取得 feature descriptor
 5. 使用 brute force 的方式比較 euclidean distance 做 Feature matching
 6. 用 RANSAC 去找出使得 Image matching 結果最好的 shift amount, 並依此對兩張圖片做 Image Stitching. (在此作業中，我們假設只會發生平移)
 7. 做 Linear Blending
@@ -49,19 +49,43 @@ R10942198 電信丙 林仲偉
 ### (1) Cylindrical Projection
 
 ### (2) Feature Detection: 
-使用 Harris Corner Detector 做 Feature detection:
+使用 Harris Corner Detector 取得 keypoint:
 1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient $I_{x}$ 和 $I_{y}$
-2. 計算gradient乘積 $I_{x}^{2}, I_{y}^{2}, I_{x}*I_{y}$
-3. 用 Gaussian Filter 作為 window function 計算gradient乘積的加總
-4. 得到M矩陣
+2. 計算 gradient 乘積 $I_{x}^{2}, I_{y}^{2}, I_{x}*I_{y}$
+3. 用 Gaussian Filter 作為 window function 計算 gradient 乘積的加總
+4. 得到 M 矩陣 
+$$
+\begin{equation}
+  \left(
+    \begin{array}{cc}
+      S_{x^{2}} S_{xy}\\
+      S_{xy} S_{y^{2}}\\
+    \end{array}
+  \right)
+\end{equation}
+$$     
 5. 計算 corner response $R = detM - k(traceM)^{2}$，這裡k值使用0.04
-6. 以 0.01*max(response)作為 threshold，篩選掉小於threshold不為corner的feature
+6. 以 0.01*max(response) 作為 threshold，篩選掉小於 threshold 不為 corner 的 keypoint
 7. 使用 maximum_filter 做 nonmax supression，篩選掉太過相近的點
-8. 剩下的點即為feature
-**Harris Corner Detector:**
-**SIFT**
+8. 剩下的點即為 keypoint
+
+使用 SIFT descriptor 取得 feature descriptor:
+**orientation assignment**
+1. 使用 Gaussian Filter 將灰階圖片平化後，取得x方向和y方向的 gradient
+2. 使用 x 和 y 的 gradient 計算 keypoint orientation 的角度$\Theta$和強度$m$
+3. 將 orientation 以每10度分成一個 bucket，得到 historgram
+4. 以每個 bucket 中間值作為 keypoint 的 orientation，以 keypoint 為中心旋轉
+5. 實現 keypoint descriptor orientation invariant
+**local image descriptor**
+1. 使用同樣的方式，但將orientation 以每45度分成一個 bucket，得到8個 orientations 的 historgram
+2. 以 keypoint 為中心，取得16x16 array，並將其分成4x4 sub-array，每個 sub-array 統計8個 orientations 各自次數
+3. 以 $8 x 4x4 = 128$ dimensions 表示為一個 keypoint descriptor
+4. Normalize dimensions 來避免光線造成的變化 (>0.2 clip) 
 
 ### (3) Feature Matching
+1. 以 brute force 兩倆比對兩張圖片間的 features
+2. 使用 euclidean distance 計算 features 的相似度
+3. 差距小於 threshold ，且最相近的 feature < 第二相近的 feature * 0.8，做matching
 
 ### (4) Image Matching and Stitching
 我們使用 RANSAC 演算法決定拼接時兩張照片的平移量。
