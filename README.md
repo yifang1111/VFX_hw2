@@ -75,6 +75,7 @@ $
 3. 將 orientation 以每 10 度分成一個 bucket，得到 historgram
 4. 以每個 bucket 中間值作為 keypoint 的 orientation，以 keypoint 為中心旋轉
 5. 實現 keypoint descriptor orientation invariant
+
 **local image descriptor**
 1. 使用同樣的方式，但將 orientation 以每 45 度分成一個 bucket，得到 8 個 orientations 的 historgram
 2. 以 keypoint 為中心，取得 16x16 array，並將其分成 4x4 sub-array，每個 sub-array 統計 8 個 orientations 各自次數
