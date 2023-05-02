@@ -122,7 +122,7 @@ def SIFT_descriptor(img, kp):
     return feat
 
 
-def feature_matching(feat1, feat2, threshold = 0.3):
+def feature_matching(feat1, feat2, threshold = 0.5):
     matches = []
     for i in range(len(feat1)):
         d = []
@@ -159,6 +159,80 @@ def RANSAC_best_moving(match_result, threshold = 5):# voting_threshold: square_d
     best_match = match_result[best_moving_index]
     # print(best_match)
     return best_moving, best_match
+
+
+# https://yungyung7654321.medium.com/python%E5%AF%A6%E4%BD%9C%E8%87%AA%E5%8B%95%E5%85%A8%E6%99%AF%E5%9C%96%E6%8B%BC%E6%8E%A5-automatic-panoramic-image-stitching-28629c912b5a
+def solve_H(P, M):
+    # P: points in the original (img_R) plane,
+    # M: points in the target (img_L) plane. 
+    A = []  
+    for i in range(len(P)): 
+        x1, y1 = P[i][0], P[i][1]
+        x2, y2 = M[i][0], M[i][1]
+        A.append([x1, y1, 1, 
+                  0, 0, 0, 
+                  -x1*x2, -y1*x2, -x2])
+        A.append([0, 0, 0, 
+                  x1, y1, 1, 
+                  -x1*y2, -y1*y2, -y2])
+    # Solve linear equations Ah = 0 using SVD
+    u, s, v = np.linalg.svd(A) 
+    # pick H from last line of vt  
+    H = np.reshape(v[8], (3,3))
+    # normalization: let H[2,2] equals to 1
+    H = H / (H.item(8))
+
+    return H
+
+def RANSAC_find_homography(src_pts, dst_pts, num_iter=8000, threshold=5, 
+                           num_sample=4):
+    # src_pts: from img_R
+    # dst_pts: from img_L 
+
+    # Solve homography matrix 
+    # P: original plane (img_R)
+    # M: target plane (img_L)
+    assert num_sample>=4, "We need 4 freedom degrees."
+    num_pts = src_pts.shape[0] 
+    max_inlier=0
+    best_H = None
+
+    # Run k times to find best Homography with maximum number of inlier.
+    for k in range(num_iter):
+        # Draw n samples randomly.
+        sample_idx = random.sample(range(num_pts), num_sample) 
+        #  Compute Homography matrix based on sample points
+        H = solve_H(src_pts[sample_idx], dst_pts[sample_idx])
+        
+        num_inlier = 0 
+        # Compute score of inlier within a threshold in this round
+        for i in range(num_pts):
+            # Compute distance of inliers & outliers
+            if i not in sample_idx:
+                src_coor = np.hstack((src_pts[i], [1])) # (x, y, 1)
+                # calculate the coordination after transform to destination img 
+                projection = np.matmul(H, src_coor.T) 
+
+                #print(i, ":",projection)
+                if projection[2] <= 1e-7: 
+                    # Small z coornidate value will result in large number after normalization.
+                    # => It is not going to be inlier.
+                    pass
+                else:
+                    # Normalize
+                    projection = projection / projection[2]
+                    #print(projection[:2], dst_pts[i])
+                    #print("np.linalg.norm(projection[:2] - dst_pts[i]", np.linalg.norm(projection[:2] - dst_pts[i])) 
+                    if (np.linalg.norm(projection[:2] - dst_pts[i]) < threshold):
+                        num_inlier = num_inlier + 1
+        # Get maximum voting score
+        if (max_inlier < num_inlier):
+            max_inlier = num_inlier
+            best_H = H
+            print(f"iter {k}: max_inlier", max_inlier)
+    print("The Number of Maximum Inlier:", max_inlier)
+
+    return best_H
 
 
 def padding_img(img, move_x, move_y):
@@ -289,11 +363,20 @@ def draw_matches(imgL, imgR, matches, img_num, save=False):
     if save:
         cv2.imwrite(f"./report_img/matching_{img_num}.jpg", img_match)
 
+def E2E_alignment(img, dy):
+    w = img.shape[1]
+    dy = np.linspace(0, dy, w, dtype=int)
+    align = img.copy()
+    for i in range(w):
+        align[:,i] = np.roll(img[:,i], -dy[i], axis=0)
+    
+    return align   
 
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description = 'Image Stitching')
     parser.add_argument('--data', default = 'data1')
+    parser.add_argument('--align', default = True)
     args = parser.parse_args()
 
     fixed_random(2322)
@@ -330,3 +413,19 @@ if __name__=="__main__":
 
     print("Done.")
     cv2.imwrite("result.png", final_img)
+
+    if args.align:
+        print("End-to-end alignment")
+        kpF = Harris_detector(images[0], i, False)
+        featF = SIFT_descriptor(images[0], kpF)
+        kpL = Harris_detector(images[-1], i, False)
+        featL = SIFT_descriptor(images[-1], kpL)
+        matches = feature_matching(featF, featL)
+        best_moving, _ = RANSAC_best_moving(matches)
+        align_img = E2E_alignment(final_img, best_moving[1])
+    
+        cv2.imwrite("result.png", align_img)
+
+
+
+
