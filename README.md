@@ -54,12 +54,15 @@ R10942198 電信丙 林仲偉
 2. 計算 gradient 乘積 $I_{x}^{2}, I_{y}^{2}, I_{x}*I_{y}$
 3. 用 Gaussian Filter 作為 window function 計算 gradient 乘積的加總 $S_{x^{2}}, S_{xy}, S_{xy}, S_{y^{2}}$
 4. 得到 M 矩陣 
-$\left(
-    \begin{array}{cc}
-      S_{x^{2}} S_{xy}\\
-      S_{xy} S_{y^{2}}\\
-    \end{array}
- \right)$
+$
+M=
+\left\(
+\begin{matrix}
+S_{x^{2}} & S_{xy} \\\
+S_{xy} & S_{y^{2}} \\\
+\end{matrix}
+\right\)
+$
 5. 計算 corner response $R = detM - k(traceM)^{2}$，這裡 k 值使用 0.04
 6. 以 0.01*max(response) 作為 threshold，篩選掉小於 threshold 不為 corner 的 keypoint
 7. 使用 maximum_filter 做 nonmax supression，篩選掉太過相近的點
