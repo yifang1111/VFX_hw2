@@ -39,11 +39,9 @@ R10942198 電信丙 林仲偉
 2. 對照片做 cylindrical projection
 3. 使用 Harris Corner Detector/SIFT 去做 Feature detection
 4. Feature matching
-5. 用 RANSAC 去找出使得 Image matching 結果最好的 Homography matrix (在此作業中，我們假設只會發生平移)
-6. 根據 Homography matrix 對兩張圖片做 Image Stitching.
-7. 做 Linear Blending
-8. 重複 2~7, 直到所有照片都被拼接完成。 
-
+5. 用 RANSAC 去找出使得 Image matching 結果最好的 shift amount, 並依此對兩張圖片做 Image Stitching. (在此作業中，我們假設只會發生平移)
+6. 做 Linear Blending
+7. 重複 2~6, 直到所有照片都被拼接完成。 
 
 ## 4. Implementation Detail
 
@@ -52,18 +50,18 @@ R10942198 電信丙 林仲偉
 ### (2) Feature Detection: 
 
 **Harris Corner Detector:**
-
-**SIFT:**
+**SIFT**
 
 ### (3) Feature Matching
 
-### (4) Image Matching
+### (4) Image Matching and Stitching
+我們使用 RANSAC 演算法決定拼接時兩張照片的平移量。
+**RANSAC Algorithm**
 
-**RANSAC Algorithm:**
+**Why not using homography matrix?**
+由於我們發現 Homography matrix 會對照片產生 translation, 而拼接到越後面的照片，累積的 translation 將越嚴重，導致後面的照片嚴重扭曲。故我們選擇計算兩張照片的平移量，來代替 homography matrix.
 
-### (5) Image Stitching
-
-### (6) Blending
+### (5) Blending
 
 
 ## 5. Result
