@@ -149,6 +149,3 @@ $$
 - 實作 Linear Blending
 
 
-## 7. Reproduce Steps
-TODO
-
