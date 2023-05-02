@@ -42,7 +42,7 @@ R10942198 電信丙 林仲偉
 5. 使用 brute force 的方式比較 euclidean distance 做 Feature matching
 6. 用 RANSAC 去找出使得 Image matching 結果最好的 shift amount, 並依此對兩張圖片做 Image Stitching. (在此作業中，我們假設只會發生平移)
 7. 做 Linear Blending
-8. 重複 2~6, 直到所有照片都被拼接完成。 
+8. 重複 2~7, 直到所有照片都被拼接完成。 
 
 ## 4. Implementation Detail
 
