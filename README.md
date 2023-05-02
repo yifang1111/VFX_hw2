@@ -114,11 +114,11 @@ $$
 **＊Why not using homography matrix?**
 
 下列5張圖為使用 homography matrix 對六張圖片做拼接的結果：
-<img src="https://i.imgur.com/qsIxVcZ.jpg" >
-<img src="https://i.imgur.com/Sujbl4s.jpg" >
-<img src="https://i.imgur.com/ynYW46j.jpg" >
-<img src="https://i.imgur.com/e9vLljf.jpg" >
-<img src="https://i.imgur.com/rqzTZ5o.jpg" >
+<img src="https://i.imgur.com/qsIxVcZ.jpg" width="200px">
+<img src="https://i.imgur.com/Sujbl4s.jpg" width="250px">
+<img src="https://i.imgur.com/ynYW46j.jpg" width="300px">
+<img src="https://i.imgur.com/e9vLljf.jpg" width="350px">
+<img src="https://i.imgur.com/rqzTZ5o.jpg" width="400px">
 
 我們發現 Homography matrix 會對照片產生 translation。 而拼接到越後面的照片，累積的 translation 將越明顯，導致後面的照片嚴重扭曲。所以我們選擇藉由兩張照片的平移量來做拼接，來代替 homography matrix.
 
